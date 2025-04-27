@@ -1,19 +1,16 @@
 ---
-title: "Global Health & Inactivity: A UNICEF Data Story"
-author: "Eveline Theresa Santhosh"
-format:
-  html:
-    toc: true
-    toc-depth: 2
-    code-fold: true
-    code-tools: true
-    code-overflow: scroll
-    embed-resources: true
-    self-contained: true
-editor: visual
-jupyter: python3
+title: "Global Health and Inequality: A UNICEF Data Story"
+author:
+  - name: Eveline Theresa Santhosh
+    affiliation: |
+      Student Number: 15858  
+      Programme: MSc in Management (Strategy)  
+      Module: BAA1030 (Data Analytics and Storytelling)  
+      Lecturer: Damien Dupré
+date: "27 April 2025"
+format: html
+code-fold: true
 ---
-
 
 ```{python}
 # Set default renderer for Plotly
@@ -38,18 +35,13 @@ indicator2 = indicator2.rename(columns={
     "sex": "Gender"
 })
 ```
-
 # Introduction
 
-Access to healthcare and engagement in physical activity are critical indicators of global health. Yet, despite international progress, significant disparities persist across regions and demographics.
-
-In this data story, we explore patterns in healthcare access, physical inactivity, and gender disparities using UNICEF datasets. Through compelling visualizations and narratives, we uncover the inequalities that shape public health outcomes globally.
+Access to healthcare and opportunities for physical activity are essential pillars of human development, especially for children and young people. UNICEF’s global mission includes ensuring the right to health and well-being for every child, yet inequalities continue to persist across regions and demographics. Through this data story, we explore critical global health indicators — healthcare access, physical inactivity rates, gender disparities, and evolving trends — by visualizing and interpreting UNICEF datasets. This journey highlights where progress has been made and where urgent action is still required to create a healthier and more equitable future for all.
 
 # Global Healthcare Access Across Countries
 
-Healthcare is recognized as a fundamental human right, but the reality of access differs vastly between countries.
-
-To understand these disparities, we mapped the percentage of people with access to healthcare in 2020. Darker shades indicate better access, while lighter shades reveal critical gaps, highlighting both progress and challenges faced by nations.
+Healthcare access remains one of the cornerstones of public health, influencing life expectancy, child mortality, and the overall well-being of communities. Yet, across the world, the ability to access quality healthcare services varies enormously. By mapping healthcare access percentages across countries, we can identify where progress has been made and where critical gaps persist. Darker shades on the map represent better healthcare access, while lighter shades highlight countries where more investment and policy reforms are urgently needed.
 
 ```{python}
 # Healthcare Access Choropleth Map (Interactive)
@@ -70,10 +62,9 @@ fig = px.choropleth(
 
 fig.show()
 ```
-
 # Global Inactivity Levels Across Regions
 
-Physical inactivity poses serious health risks, and its prevalence varies widely by region. Using UNICEF datasets, we examined inactivity rates across different global regions. This bar chart highlights how certain areas, particularly low- and middle-income countries, tend to experience higher levels of inactivity, shedding light on where interventions may be most needed.
+Physical inactivity is a major public health concern that increases the risk of non-communicable diseases such as obesity, diabetes, and cardiovascular diseases. In many low- and middle-income countries, a combination of limited recreational infrastructure, safety concerns, and socioeconomic barriers restricts opportunities for physical activity. This bar chart visualizes physical inactivity rates across countries in 2020, offering a snapshot of global patterns and highlighting regions where interventions and awareness programs are urgently needed to promote active, healthy lifestyles.
 
 **The visualization was created using Python code in Google Colab and inserted here as a PNG image.**
 
@@ -91,10 +82,9 @@ Physical inactivity poses serious health risks, and its prevalence varies widely
 ```
 ![Top 15 Countries by Healthcare Access Bar Chart](bar_chart.png)
 
-
 # Physical Inactivity vs Healthcare Access
 
-Understanding the relationship between healthcare access and physical inactivity can reveal important patterns about public health. In regions with lower healthcare access, people may be more vulnerable to the risks associated with inactivity. This scatter plot compares the two indicators across countries for the year 2020.
+Exploring the relationship between healthcare access and physical inactivity unveils crucial insights into global health dynamics. Countries with limited healthcare services may struggle to promote preventive health practices, including regular physical activity. The scatter plot below illustrates the correlation between healthcare access and physical inactivity levels in 2020. Observing these patterns allows policymakers to understand the dual importance of both healthcare infrastructure and lifestyle interventions in combating the rise of non-communicable diseases.
 
 ```{python}
 # Correct Scatter Plot (Google Colab Style)
@@ -147,11 +137,9 @@ fig.update_layout(
 
 fig.show()
 ```
-
-
 # Time Series of Physical Inactivity Over Time
 
-Monitoring physical inactivity rates over time provides insight into whether public health interventions are making a positive impact. By observing trends, policymakers and health organizations can identify regions that are improving or those that may require more targeted strategies.
+Tracking physical inactivity over time provides valuable insights into the effectiveness of global health initiatives. By observing trends from 2010 to 2020, we can identify whether efforts to promote active lifestyles are succeeding or if further intervention is necessary. This time-series chart displays the average global inactivity rates over the decade, highlighting whether the world has made meaningful progress towards reducing physical inactivity and encouraging healthier living habits.
 
 ```{python}
 # Time-Series Line Chart: Global Average Physical Inactivity Over Time
@@ -179,10 +167,9 @@ fig = px.line(
 
 fig.show()
 ```
-
 # Gender Disparities in Physical Inactivity
 
-Gender plays a significant role in physical activity levels worldwide. In many regions, cultural, social, and economic barriers limit opportunities for women and girls to engage in physical activities. The donut chart below highlights the gap between male and female inactivity rates globally in 2020. In the donut charts, the pink (Female) and blue (Male) sections represent the proportion of physically inactive individuals in 2015. The light green segments represent those who were physically active. Notably, a higher percentage of females were physically inactive compared to males globally.
+Gender plays a significant role in physical activity levels across the globe. Social norms, cultural restrictions, and unequal access to recreational spaces often limit the opportunities available for women and girls to participate in physical activities. This donut chart visualizes the average inactivity rates between males and females in 2020. The results emphasize that females consistently report higher inactivity rates compared to males, highlighting the need for gender sensitive interventions that address barriers and promote inclusive physical activity initiatives worldwide.
 
 **The visualization was created using Python code in Google Colab and inserted here as a PNG image.**
 
@@ -246,7 +233,15 @@ Gender plays a significant role in physical activity levels worldwide. In many r
 
 # Conclusion
 
-This UNICEF data story has highlighted the urgent global challenges in healthcare access, physical inactivity, and gender disparities. While certain regions have made significant progress, many countries continue to face critical gaps that undermine public health outcomes.
+This UNICEF data story has highlighted urgent global challenges in healthcare access, physical inactivity, and gender disparities. While progress has been made in many regions, the disparities remain too significant to ignore. Our visual exploration showed that improving healthcare infrastructure and promoting active lifestyles are crucial for enhancing global health outcomes, especially for vulnerable populations such as women and children.
 
-The visual exploration shows that improving healthcare access and promoting active lifestyles must be prioritized, especially for vulnerable populations such as women and children. Moving forward, collaborative strategies between governments, communities, and international organizations are essential. Investing in healthcare infrastructure, creating safer environments for physical activity, and addressing cultural and gender based barriers can drive meaningful change. Only through collective action can we build a future where everyone regardless of geography, gender, or income enjoys equitable opportunities for health and well-being.
+To create a healthier world, collaborative efforts between governments, communities, and international organizations must be prioritized. Investing in healthcare, building safer spaces for physical activity, and promoting gender equity can drive meaningful change.
+
+As UNICEF’s mission reminds us:
+
+> "Children are not only our future — they are our present."  
+> Investing in their health today means investing in a more equitable and vibrant tomorrow.
+
+Together, through collective action, we can build a world where everyone, regardless of geography, gender, or income, enjoys fair opportunities for health, happiness, and well-being.
+
 
