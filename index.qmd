@@ -1,0 +1,252 @@
+---
+title: "Global Health & Inactivity: A UNICEF Data Story"
+author: "Eveline Theresa Santhosh"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    code-tools: true
+    code-overflow: scroll
+    embed-resources: true
+    self-contained: true
+editor: visual
+jupyter: python3
+---
+
+
+```{python}
+# Set default renderer for Plotly
+import plotly.io as pio
+pio.renderers.default = "notebook_connected"
+
+# Import all libraries
+import pandas as pd
+import plotly.express as px
+import plotnine as pn
+
+# Load UNICEF datasets
+indicator1 = pd.read_csv("unicef_indicator_1.csv")
+indicator2 = pd.read_csv("unicef_indicator_2.csv")
+metadata = pd.read_csv("unicef_metadata.csv")
+
+# Rename columns for indicator2 to match easier names
+indicator2 = indicator2.rename(columns={
+    "country": "Country",
+    "time_period": "Year",
+    "obs_value": "Inactivity (%)",
+    "sex": "Gender"
+})
+```
+
+# Introduction
+
+Access to healthcare and engagement in physical activity are critical indicators of global health. Yet, despite international progress, significant disparities persist across regions and demographics.
+
+In this data story, we explore patterns in healthcare access, physical inactivity, and gender disparities using UNICEF datasets. Through compelling visualizations and narratives, we uncover the inequalities that shape public health outcomes globally.
+
+# Global Healthcare Access Across Countries
+
+Healthcare is recognized as a fundamental human right, but the reality of access differs vastly between countries.
+
+To understand these disparities, we mapped the percentage of people with access to healthcare in 2020. Darker shades indicate better access, while lighter shades reveal critical gaps, highlighting both progress and challenges faced by nations.
+
+```{python}
+# Healthcare Access Choropleth Map (Interactive)
+import plotly.express as px
+
+# Filter indicator1 data for 2020
+health_map = indicator1[indicator1["Year"] == 2020].dropna(subset=["Healthcare Access (%)"])
+
+fig = px.choropleth(
+    health_map,
+    locations="Country",
+    locationmode="country names",
+    color="Healthcare Access (%)",
+    color_continuous_scale="Blues",
+    title="Healthcare Access by Country (2020)",
+    labels={"Healthcare Access (%)": "Access (%)"}
+)
+
+fig.show()
+```
+
+# Global Inactivity Levels Across Regions
+
+Physical inactivity poses serious health risks, and its prevalence varies widely by region. Using UNICEF datasets, we examined inactivity rates across different global regions. This bar chart highlights how certain areas, particularly low- and middle-income countries, tend to experience higher levels of inactivity, shedding light on where interventions may be most needed.
+
+**The visualization was created using Python code in Google Colab and inserted here as a PNG image.**
+
+```{python}
+# (This code was run separately in Google Colab.)
+# import polars as pl
+# import pandas as pd
+# from plotnine import *
+
+# health_df = pl.read_csv("unicef_indicator_1.csv")
+# health_2020 = health_df.filter(pl.col("Year") == 2020).to_pandas()
+# health_2020 = health_2020.rename(columns={"Healthcare Access (%)": "Healthcare_Access"})
+
+# (Plot code for ggplot bar chart here)
+```
+![Top 15 Countries by Healthcare Access Bar Chart](bar_chart.png)
+
+
+# Physical Inactivity vs Healthcare Access
+
+Understanding the relationship between healthcare access and physical inactivity can reveal important patterns about public health. In regions with lower healthcare access, people may be more vulnerable to the risks associated with inactivity. This scatter plot compares the two indicators across countries for the year 2020.
+
+```{python}
+# Correct Scatter Plot (Google Colab Style)
+
+import plotly.express as px
+
+# 1. Filter for Year = 2015
+indicator1_2015 = indicator1[indicator1["Year"] == 2015]
+indicator2_2015 = indicator2[indicator2["Year"] == 2015]
+
+# 2. Merge filtered datasets
+merged_df = pd.merge(
+    indicator1_2015,
+    indicator2_2015,
+    on="Country",
+    how="inner"
+)
+
+# 3. Drop missing values
+merged_df = merged_df.dropna(subset=["Healthcare Access (%)", "Inactivity (%)"])
+
+# 4. Create scatter plot
+fig = px.scatter(
+    merged_df,
+    x="Healthcare Access (%)",
+    y="Inactivity (%)",
+    title="Healthcare Access vs Physical Inactivity (2015)",
+    color="Inactivity (%)",
+    color_continuous_scale="viridis",
+    width=650,
+    height=550,
+    template="plotly_white",
+    hover_data={
+        "Country": True,
+        "Healthcare Access (%)": True,
+        "Inactivity (%)": True
+    }
+)
+
+fig.update_traces(
+    marker=dict(size=10, opacity=0.85, line=dict(width=0.8, color='darkgrey'))
+)
+
+fig.update_layout(
+    font=dict(size=13),
+    margin=dict(l=50, r=30, t=50, b=50),
+    title_font=dict(size=16),
+    coloraxis_colorbar=dict(title="Physical Inactivity (%)")
+)
+
+fig.show()
+```
+
+
+# Time Series of Physical Inactivity Over Time
+
+Monitoring physical inactivity rates over time provides insight into whether public health interventions are making a positive impact. By observing trends, policymakers and health organizations can identify regions that are improving or those that may require more targeted strategies.
+
+```{python}
+# Time-Series Line Chart: Global Average Physical Inactivity Over Time
+import plotly.express as px
+
+# Prepare data
+inactivity_trend = (
+    indicator2.dropna(subset=["Inactivity (%)", "Year"])
+    .groupby("Year")["Inactivity (%)"]
+    .mean()
+    .reset_index()
+)
+
+fig = px.line(
+    inactivity_trend,
+    x="Year",
+    y="Inactivity (%)",
+    markers=True,
+    title="Global Average Physical Inactivity Over Time (2010–2020)",
+    labels={
+        "Year": "Year",
+        "Inactivity (%)": "Average Inactivity (%)"
+    }
+)
+
+fig.show()
+```
+
+# Gender Disparities in Physical Inactivity
+
+Gender plays a significant role in physical activity levels worldwide. In many regions, cultural, social, and economic barriers limit opportunities for women and girls to engage in physical activities. The donut chart below highlights the gap between male and female inactivity rates globally in 2020. In the donut charts, the pink (Female) and blue (Male) sections represent the proportion of physically inactive individuals in 2015. The light green segments represent those who were physically active. Notably, a higher percentage of females were physically inactive compared to males globally.
+
+**The visualization was created using Python code in Google Colab and inserted here as a PNG image.**
+
+```{python}
+# (This code was run separately in Google Colab.)
+
+# import pandas as pd
+# import plotly.graph_objects as go
+
+# Load your data
+# indicator_df = pd.read_csv("unicef_indicator_2.csv")
+
+# Filter for 2020
+# activity_2020 = indicator_df[indicator_df["time_period"] == 2020]
+
+# Separate by gender
+# female_2020 = activity_2020[activity_2020["sex"] == "Female"]
+# male_2020 = activity_2020[activity_2020["sex"] == "Male"]
+
+# Average values
+# female_avg = female_2020["obs_value"].mean()
+# male_avg = male_2020["obs_value"].mean()
+
+# Donut values
+# female_values = [female_avg, 100 - female_avg]
+# male_values = [male_avg, 100 - male_avg]
+
+# Create donut charts
+# fig = go.Figure()
+
+# fig.add_trace(go.Pie(
+#     labels=["Inactive", "Active"],
+#     values=female_values,
+#     hole=0.5,
+#     name="Female",
+#     domain=dict(x=[0, 0.45]),
+#     marker_colors=["#f06292", "#c8e6c9"]
+# ))
+
+# fig.add_trace(go.Pie(
+#     labels=["Inactive", "Active"],
+#     values=male_values,
+#     hole=0.5,
+#     name="Male",
+#     domain=dict(x=[0.55, 1.0]),
+#     marker_colors=["#64b5f6", "#c8e6c9"]
+# ))
+
+# fig.update_layout(
+#     title_text="Global Physical Inactivity: Male vs Female (2020)",
+#     annotations=[
+#         dict(text="Female", x=0.20, y=0.5, font_size=16, showarrow=False),
+#         dict(text="Male", x=0.80, y=0.5, font_size=16, showarrow=False)
+#     ],
+#     showlegend=False
+# )
+
+# fig.show()
+```
+![Genderwise Global Physical Inactivity](donut_chart_gender.png)
+
+# Conclusion
+
+This UNICEF data story has highlighted the urgent global challenges in healthcare access, physical inactivity, and gender disparities. While certain regions have made significant progress, many countries continue to face critical gaps that undermine public health outcomes.
+
+The visual exploration shows that improving healthcare access and promoting active lifestyles must be prioritized, especially for vulnerable populations such as women and children. Moving forward, collaborative strategies between governments, communities, and international organizations are essential. Investing in healthcare infrastructure, creating safer environments for physical activity, and addressing cultural and gender based barriers can drive meaningful change. Only through collective action can we build a future where everyone regardless of geography, gender, or income enjoys equitable opportunities for health and well-being.
+
